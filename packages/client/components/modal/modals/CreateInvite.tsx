@@ -42,10 +42,7 @@ export function CreateInviteModal(
       props.channel
         .createInvite()
         .then(({ _id }) =>
-          setLink(
-            CONFIGURATION.IS_STOAT
-              ? `https://stt.gg/${_id}`
-              : `${window.location.protocol}//${window.location.host}/invite/${_id}`,
+          setLink(`${window.location.protocol}//${window.location.host}/invite/${_id}`,
           ),
         ),
     onError: showError,

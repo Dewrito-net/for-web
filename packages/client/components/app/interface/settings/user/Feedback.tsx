@@ -29,7 +29,7 @@ export function Feedback() {
 
   const showLoungeButton = CONFIGURATION.IS_STOAT;
   const isInLounge =
-    client()!.servers.get("01F7ZSBSFHQ8TA81725KQCSDDP") !== undefined;
+    client()!.servers.get("01KHAZ8XJCK2FJ8SXY0ZPZD5E5") !== undefined;
 
   return (
     <Column gap="lg">
@@ -92,7 +92,7 @@ export function Feedback() {
           <Match when={showLoungeButton && isInLounge}>
             <CategoryButton
               onClick={() => {
-                navigate("/server/01F7ZSBSFHQ8TA81725KQCSDDP");
+                navigate("/server/01KHAZ8XJCK2FJ8SXY0ZPZD5E5");
                 pop();
               }}
               description={
@@ -110,7 +110,7 @@ export function Feedback() {
             <CategoryButton
               onClick={() => {
                 client()
-                  .api.get("/invites/Testers")
+                  .api.get("/invites/Dewrito.net")
                   .then((invite) => PublicChannelInvite.from(client(), invite))
                   .then((invite) => openModal({ type: "invite", invite }));
               }}
@@ -122,7 +122,7 @@ export function Feedback() {
               }
               icon={<MdGroups3 />}
             >
-              <Trans>Join the Stoat Lounge</Trans>
+              <Trans>Join the Dewrito Lounge</Trans>
             </CategoryButton>
           </Match>
         </Switch>

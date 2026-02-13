@@ -98,7 +98,7 @@ export function HomePage() {
   // check if we're stoat.chat; if so, check if the user is in the Lounge
   const showLoungeButton = CONFIGURATION.IS_STOAT;
   const isInLounge =
-    client()!.servers.get("01F7ZSBSFHQ8TA81725KQCSDDP") !== undefined;
+    client()!.servers.get("01KHAZ8XJCK2FJ8SXY0ZPZD5E5") !== undefined;
 
   return (
     <Base>
@@ -139,7 +139,7 @@ export function HomePage() {
             <Switch fallback={null}>
               <Match when={showLoungeButton && isInLounge}>
                 <CategoryButton
-                  onClick={() => navigate("/server/01F7ZSBSFHQ8TA81725KQCSDDP")}
+                  onClick={() => navigate("/server/01KHAZ8XJCK2FJ8SXY0ZPZD5E5")}
                   description={
                     <Trans>
                       You can report issues and discuss improvements with us
@@ -148,14 +148,14 @@ export function HomePage() {
                   }
                   icon={<MdGroups3 />}
                 >
-                  <Trans>Go to the Stoat Lounge</Trans>
+                  <Trans>Go to the Dewrito Lounge</Trans>
                 </CategoryButton>
               </Match>
               <Match when={showLoungeButton && !isInLounge}>
                 <CategoryButton
                   onClick={() => {
                     client()
-                      .api.get("/invites/Testers")
+                      .api.get("/invites/Dewrito.net")
                       .then((invite) =>
                         PublicChannelInvite.from(client(), invite),
                       )
@@ -169,7 +169,7 @@ export function HomePage() {
                   }
                   icon={<MdGroups3 />}
                 >
-                  <Trans>Join the Stoat Lounge</Trans>
+                  <Trans>Join the Dewrito Lounge</Trans>
                 </CategoryButton>
               </Match>
             </Switch>
@@ -177,15 +177,15 @@ export function HomePage() {
               variant="tertiary"
               onClick={() =>
                 window.open(
-                  "https://wiki.revolt.chat/notes/project/financial-support/",
+                  "https://stoat.dewrito.net/payme",
                 )
               }
               description={
-                <Trans>Support the project by donating - thank you!</Trans>
+                <Trans>Support the Bacon by donating - thank you!</Trans>
               }
               icon={<MdPayments />}
             >
-              <Trans>Donate to Stoat</Trans>
+              <Trans>Donate to Bacon</Trans>
             </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
@@ -199,7 +199,7 @@ export function HomePage() {
                 }
                 icon={<MdExplore />}
               >
-                <Trans>Discover Stoat</Trans>
+                <Trans>Discover Dewrito</Trans>
               </CategoryButton>
             </Show>
             <CategoryButton
