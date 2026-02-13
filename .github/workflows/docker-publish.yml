@@ -13,7 +13,7 @@ jobs:
       packages: write
 
     env:
-      IMAGE_NAME: ghcr.io/${{ github.repository }}
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/for-web
 
     steps:
       - name: Check out code
@@ -40,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/for-web:latest
+          tags: ${{ env.IMAGE_NAME_LC }}:latest
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha,scope=buildx-base-multi-arch 
           cache-to: type=gha,scope=buildx-base-multi-arch,mode=max
