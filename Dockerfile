@@ -1,6 +1,6 @@
 # Stoatchat web client (for-web) — self-contained build
 #
-# Builds the SolidJS client from https://github.com/LordGuenni/for-web
+# Builds the SolidJS client from https://github.com/Dewrito-net/for-web
 # (forked with Discord-like voice UI improvements)
 # and serves it via nginx with runtime environment injection.
 #
@@ -28,7 +28,7 @@ WORKDIR /app
 ARG STOATCHAT_WEB_REF=main
 ARG CACHE_BUST=1
 RUN git clone --branch ${STOATCHAT_WEB_REF} --recurse-submodules \
-    https://github.com/LordGuenni/for-web.git .
+    https://github.com/Dewrito-net/for-web.git .
 # Assets submodule uses SSH in .gitmodules; clone via HTTPS separately
 RUN rm -rf packages/client/assets && \
     git clone --depth 1 https://github.com/stoatchat/assets.git packages/client/assets
