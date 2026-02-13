@@ -55,11 +55,7 @@ export function RoomParticipants() {
 
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "center",
-
-        // display: 'grid',
-        // gridAutoRows:'1fr',
-        // gridTemplateColumns:'repeat(auto-fill, minmax(0, 1fr))',
+        alignContent: "center",
       })}
     >
       <TrackLoop tracks={tracks}>{() => <LeParticipant />}</TrackLoop>
@@ -101,8 +97,7 @@ export function FakeParticipants() {
 
 const Tile = styled("div", {
   base: {
-    minWidth: "240px",
-    maxWidth: "240px",
+    flex: "1 1 240px",
     display: "grid",
     aspectRatio: "16/9",
     transition: ".3s ease all",

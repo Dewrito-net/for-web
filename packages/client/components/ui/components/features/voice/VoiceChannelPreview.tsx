@@ -1,4 +1,4 @@
-import { For, Show, splitProps } from "solid-js";
+import { For, JSX, Show, splitProps } from "solid-js";
 import {
   TrackLoop,
   useEnsureParticipant,
@@ -25,6 +25,8 @@ import { VoiceStatefulUserIcons } from "./VoiceStatefulUserIcons";
  * Render a preview of users (or the active participants) for a given channel
  *
  * Designed for the server sidebar to be below channels
+ * 
+ * Discord-like behavior: Always show participants, even when not connected
  */
 export function VoiceChannelPreview(props: { channel: Channel }) {
   return (
@@ -32,39 +34,53 @@ export function VoiceChannelPreview(props: { channel: Channel }) {
       channelId={props.channel.id}
       fallback={<VariantPreview channel={props.channel} />}
     >
-      <VariantLive />
+      {/* When in room, show live participants, but also fall back to preview if no tracks */}
+      <VariantLive fallback={<VariantPreview channel={props.channel} />} />
     </InRoom>
   );
 }
 
 /**
- * Use API as the source of truth
+ * Use API as the source of truth when connected
  */
-function VariantLive() {
+function VariantLive(props: { fallback?: JSX.Element }) {
   const tracks = useTracks(
     [{ source: Track.Source.Camera, withPlaceholder: true }],
     { onlySubscribed: false },
   );
 
   return (
-    <Base>
-      <TrackLoop tracks={tracks}>{() => <ParticipantLive />}</TrackLoop>
-    </Base>
+    <Show when={tracks().length > 0} fallback={props.fallback}>
+      <Base>
+        <TrackLoop tracks={tracks}>{() => <ParticipantLive />}</TrackLoop>
+      </Base>
+    </Show>
   );
 }
 
 /**
- * Use LiveKit as the source of truth
+ * Use API as the source of truth when not connected
+ * 
+ * NOTE: Due to backend limitation, voice events are only published to channel subscribers,
+ * not all server members. This means you may only see participants if:
+ * 1. You receive initial state from Ready event
+ * 2. You are subscribed to this specific channel
+ * 
+ * Full Discord-like behavior requires backend changes to broadcast voice events to server scope.
  */
 function VariantPreview(props: { channel: Channel }) {
+  const participants = () => [...props.channel.voiceParticipants.values()];
+  
+  // Debug logging to help diagnose visibility issues
+  console.log('[VoiceChannelPreview]', props.channel.name || props.channel.id, '- Participants:', participants().length);
+  
+  // Always render Base container, even if empty (keeps layout consistent)
   return (
-    <Show when={props.channel.voiceParticipants.size}>
-      <Base>
-        <For each={[...props.channel.voiceParticipants.values()]}>
-          {(participant) => <ParticipantPreview participant={participant} />}
-        </For>
-      </Base>
-    </Show>
+    <Base>
+      <For each={participants()}>
+        {(participant) => <ParticipantPreview participant={participant} />}
+      </For>
+    </Base>
   );
 }
 
