@@ -41,7 +41,7 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-latest
 
-    if: ${{ needs.i18n.result == 'skipped' || (needs.i18n.result == 'success' && needs.i18n.outputs.committed != 'true') }}
+    if: ${{ always() }}
     needs:
       - i18n
 
@@ -63,7 +63,7 @@ jobs:
     name: Lint & Format
     runs-on: ubuntu-latest
 
-    if: ${{ needs.i18n.result == 'skipped' || (needs.i18n.result == 'success' && needs.i18n.outputs.committed != 'true') }}
+    if: ${{ always() }}
     needs:
       - i18n
 
@@ -86,7 +86,7 @@ jobs:
     name: e2e Integration Test
     runs-on: ubuntu-latest
 
-    if: ${{ needs.i18n.result == 'skipped' || (needs.i18n.result == 'success' && needs.i18n.outputs.committed != 'true') }}
+    if: ${{ always() }}
     needs:
       - i18n
 
