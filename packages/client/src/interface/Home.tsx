@@ -148,7 +148,7 @@ export function HomePage() {
                   }
                   icon={<MdGroups3 />}
                 >
-                  <Trans>Go to the Dewrito Lounge</Trans>
+                  <Trans>Go to the Stoat Lounge</Trans>
                 </CategoryButton>
               </Match>
               <Match when={showLoungeButton && !isInLounge}>
@@ -169,7 +169,7 @@ export function HomePage() {
                   }
                   icon={<MdGroups3 />}
                 >
-                  <Trans>Join the Dewrito Lounge</Trans>
+                  <Trans>Join the Stoat Lounge</Trans>
                 </CategoryButton>
               </Match>
             </Switch>
@@ -181,11 +181,11 @@ export function HomePage() {
                 )
               }
               description={
-                <Trans>Support the Bacon by donating - thank you!</Trans>
+                <Trans>Support the Stoat by donating - thank you!</Trans>
               }
               icon={<MdPayments />}
             >
-              <Trans>Donate to Bacon</Trans>
+              <Trans>Donate to Stoat</Trans>
             </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
@@ -199,7 +199,7 @@ export function HomePage() {
                 }
                 icon={<MdExplore />}
               >
-                <Trans>Discover Dewrito</Trans>
+                <Trans>Discover Stoat</Trans>
               </CategoryButton>
             </Show>
             <CategoryButton

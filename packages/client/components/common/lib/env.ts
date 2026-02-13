@@ -18,6 +18,7 @@ export default {
   IS_STOAT: [
     // historically...
     "https://stoat.dewrito.net",
+     "https://stoat.dewrito.net/api",
     "https://api.revolt.chat",
     "https://beta.revolt.chat/api",
     "https://revolt.chat/api",

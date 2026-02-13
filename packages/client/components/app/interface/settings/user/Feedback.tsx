@@ -122,7 +122,7 @@ export function Feedback() {
               }
               icon={<MdGroups3 />}
             >
-              <Trans>Join the Dewrito Lounge</Trans>
+              <Trans>Join the Stoat Lounge</Trans>
             </CategoryButton>
           </Match>
         </Switch>
