@@ -91,6 +91,11 @@ type CategoryItem =
       gif: GifResult | null;
     };
 
+  function gifboxUrl(client: ReturnType<typeof useClient>) {
+  const app = client()?.configuration?.app ?? "";
+  return `${app}/gifbox`;
+}
+
 function Categories() {
   let targetElement!: HTMLDivElement;
 
@@ -101,7 +106,7 @@ function Categories() {
     queryFn: () => {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
-      return fetch("https://stoat.dewrito.net/gifbox/categories?locale=en_US", {
+      return fetch(`${gifboxUrl(client)}/categories?locale=en_US`, {
         headers: {
           [authHeader]: authHeaderValue,
         },
@@ -116,7 +121,7 @@ function Categories() {
     queryFn: () => {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
-      return fetch("https://stoat.dewrito.net/gifbox/trending?locale=en_US&limit=1", {
+      return fetch(`${gifboxUrl(client)}/trending?locale=en_US&limit=1`, {
         headers: {
           [authHeader]: authHeaderValue,
         },
@@ -220,7 +225,7 @@ function GifSearch(props: { query: string }) {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
       return fetch(
-        "https://stoat.dewrito.net/gifbox/" +
+        `${gifboxUrl(client)}/` +
           (props.query === "trending"
             ? `trending?locale=en_US`
             : `search?locale=en_US&query=${encodeURIComponent(props.query)}`),
