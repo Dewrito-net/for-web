@@ -91,7 +91,7 @@ type CategoryItem =
       gif: GifResult | null;
     };
 
-  function gifboxUrl(client: ReturnType<typeof useClient>) {
+function gifboxUrl(client: ReturnType<typeof useClient>) {
   const app = client()?.configuration?.app ?? "";
   return `${app}/gifbox`;
 }
