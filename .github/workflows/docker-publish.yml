@@ -73,8 +73,6 @@ jobs:
             STOATCHAT_WEB_REF=main
             CACHE_BUST=${{ github.sha }}
           outputs: type=image,name=${{ env.REGISTRY }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=gha,scope=web-${{ matrix.arch }}
-          cache-to: type=gha,scope=web-${{ matrix.arch }},mode=max
 
       - name: Export digest
         run: |
