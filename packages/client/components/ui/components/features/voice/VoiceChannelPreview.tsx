@@ -30,11 +30,13 @@ function VariantPreview(props: { channel: Channel }) {
   const participants = () => [...props.channel.voiceParticipants.values()];
   
   return (
-    <Base>
-      <For each={participants()}>
-        {(participant) => <ParticipantPreview participant={participant} />}
-      </For>
-    </Base>
+    <Show when={participants().length > 0}>
+      <Base>
+        <For each={participants()}>
+          {(participant) => <ParticipantPreview participant={participant} />}
+        </For>
+      </Base>
+    </Show>
   );
 }
 
