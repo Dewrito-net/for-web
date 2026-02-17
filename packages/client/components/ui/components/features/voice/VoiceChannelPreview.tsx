@@ -1,20 +1,11 @@
-import { For, JSX, Show, splitProps } from "solid-js";
-import {
-  TrackLoop,
-  useEnsureParticipant,
-  useIsMuted,
-  useIsSpeaking,
-  useTracks,
-} from "solid-livekit-components";
+import { For, splitProps } from "solid-js";
 
-import { Track } from "livekit-client";
 import { Channel, VoiceParticipant } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
-import { InRoom } from "@revolt/rtc";
 
 import { Avatar, Ripple, typography } from "../../design";
 import { Row } from "../../layout";
@@ -22,42 +13,18 @@ import { Row } from "../../layout";
 import { VoiceStatefulUserIcons } from "./VoiceStatefulUserIcons";
 
 /**
- * Render a preview of users (or the active participants) for a given channel
+ * Render a preview of users for a given voice channel
  *
- * Designed for the server sidebar to be below channels
+ * Shows all voice participants regardless of whether you're connected.
+ * Data comes from backend via WebSocket events (VoiceChannelJoin/Leave/Move).
+ * Designed for the server sidebar to be below channels.
  */
 export function VoiceChannelPreview(props: { channel: Channel }) {
-  return (
-    <InRoom
-      channelId={props.channel.id}
-      fallback={<VariantPreview channel={props.channel} />}
-    >
-      {/* When in room, show live participants, but also fall back to preview if no tracks */}
-      <VariantLive fallback={<VariantPreview channel={props.channel} />} />
-    </InRoom>
-  );
+  return <VariantPreview channel={props.channel} />;
 }
 
 /**
- * Use API as the source of truth when connected
- */
-function VariantLive(props: { fallback?: JSX.Element }) {
-  const tracks = useTracks(
-    [{ source: Track.Source.Camera, withPlaceholder: true }],
-    { onlySubscribed: false },
-  );
-
-  return (
-    <Show when={tracks().length > 0} fallback={props.fallback}>
-      <Base>
-        <TrackLoop tracks={tracks}>{() => <ParticipantLive />}</TrackLoop>
-      </Base>
-    </Show>
-  );
-}
-
-/**
- * Use API as the source of truth when not connected
+ * Use API as the source of truth to display all voice participants
  */
 function VariantPreview(props: { channel: Channel }) {
   const participants = () => [...props.channel.voiceParticipants.values()];
@@ -68,32 +35,6 @@ function VariantPreview(props: { channel: Channel }) {
         {(participant) => <ParticipantPreview participant={participant} />}
       </For>
     </Base>
-  );
-}
-
-/**
- * Live variant of participant
- */
-function ParticipantLive() {
-  const participant = useEnsureParticipant();
-
-  const isMuted = useIsMuted({
-    participant,
-    source: Track.Source.Microphone,
-  });
-
-  const isSpeaking = useIsSpeaking(participant);
-
-  return (
-    <CommonUser
-      userId={participant.identity}
-      speaking={isSpeaking()}
-      muted={isMuted()}
-      deafened={false}
-      camera={false}
-      screenshare={false}
-      isLive
-    />
   );
 }
 
