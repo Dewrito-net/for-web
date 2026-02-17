@@ -148,12 +148,26 @@ function UserTile() {
     }
   };
 
+  let videoRef: HTMLDivElement | undefined;
+
+  const toggleFullscreen = () => {
+    if (!videoRef) return;
+    if (!document.fullscreenElement) {
+      videoRef.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   return (
     <div
+      ref={videoRef}
       ref={videoRef}
       class={tile({
         speaking: isSpeaking(),
       })}
+      onClick={toggleFullscreen}
+      style={{ cursor: "pointer" }}
       onClick={toggleFullscreen}
       style={{ cursor: "pointer" }}
       use:floating={{
@@ -194,6 +208,9 @@ function UserTile() {
             userId={participant.identity}
             muted={isMuted()}
           />
+          <Show when={isTrackReference(track)}>
+            <Symbol size={18}>fullscreen</Symbol>
+          </Show>
           <Show when={isTrackReference(track)}>
             <Symbol size={18}>fullscreen</Symbol>
           </Show>
