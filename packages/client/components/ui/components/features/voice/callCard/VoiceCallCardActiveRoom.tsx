@@ -151,9 +151,12 @@ function UserTile() {
   return (
     <div
       ref={videoRef}
+      ref={videoRef}
       class={tile({
         speaking: isSpeaking(),
       })}
+      onClick={toggleFullscreen}
+      style={{ cursor: "pointer" }}
       onClick={toggleFullscreen}
       style={{ cursor: "pointer" }}
       use:floating={{
@@ -194,6 +197,9 @@ function UserTile() {
             userId={participant.identity}
             muted={isMuted()}
           />
+          <Show when={isTrackReference(track)}>
+            <Symbol size={18}>fullscreen</Symbol>
+          </Show>
           <Show when={isTrackReference(track)}>
             <Symbol size={18}>fullscreen</Symbol>
           </Show>
