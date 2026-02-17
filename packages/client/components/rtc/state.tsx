@@ -208,5 +208,3 @@ export function VoiceContext(props: { children: JSX.Element }) {
 }
 
 export const useVoice = () => useContext(voiceContext);
-
-export const useVoice = () => useContext(voiceContext);
