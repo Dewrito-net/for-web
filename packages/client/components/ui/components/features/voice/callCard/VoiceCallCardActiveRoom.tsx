@@ -148,17 +148,6 @@ function UserTile() {
     }
   };
 
-  let videoRef: HTMLDivElement | undefined;
-
-  const toggleFullscreen = () => {
-    if (!videoRef) return;
-    if (!document.fullscreenElement) {
-      videoRef.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  };
-
   return (
     <div
       ref={videoRef}
