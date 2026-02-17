@@ -9,6 +9,8 @@ import {
 } from "solid-js";
 import { RoomContext } from "solid-livekit-components";
 
+import { Room } from "livekit-client";
+import { DenoiseTrackProcessor } from "livekit-rnnoise-processor";
 import { Room, VideoPresets } from "livekit-client";
 import { Channel } from "stoat.js";
 
@@ -108,14 +110,17 @@ class Voice {
       this.#setDeafen(false);
       this.#setVideo(false);
       this.#setScreenshare(false);
-
-      if (this.speakingPermission)
-        room.localParticipant
-          .setMicrophoneEnabled(true)
-          .then((track) => this.#setMicrophone(typeof track !== "undefined"));
     });
 
-    room.addListener("connected", () => this.#setState("CONNECTED"));
+    room.addListener("connected", () => {
+      this.#setState("CONNECTED");
+      if (this.speakingPermission)
+        room.localParticipant.setMicrophoneEnabled(true).then((track) => {
+          this.#setMicrophone(typeof track !== "undefined");
+          if (this.#settings.rnnoise)
+            track?.audioTrack?.setProcessor(new DenoiseTrackProcessor());
+        });
+    });
 
     room.addListener("disconnected", () => this.#setState("DISCONNECTED"));
 
