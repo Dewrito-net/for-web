@@ -9,7 +9,6 @@ import {
 } from "solid-js";
 import { RoomContext } from "solid-livekit-components";
 
-import { Room } from "livekit-client";
 import { DenoiseTrackProcessor } from "livekit-rnnoise-processor";
 import { Room, VideoPresets } from "livekit-client";
 import { Channel } from "stoat.js";
