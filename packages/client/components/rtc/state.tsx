@@ -9,8 +9,7 @@ import {
 } from "solid-js";
 import { RoomContext } from "solid-livekit-components";
 
-import { Room, VideoPresets } from "livekit-client";
-import { DenoiseTrackProcessor } from "livekit-rnnoise-processor";
+import { Room } from "livekit-client";
 import { Channel } from "stoat.js";
 
 import { useState } from "@revolt/state";
@@ -92,9 +91,6 @@ class Voice {
         echoCancellation: this.#settings.echoCancellation,
         noiseSuppression: this.#settings.noiseSupression,
       },
-      videoCaptureDefaults: {
-        resolution: VideoPresets.h1080.resolution,
-      },
       audioOutput: {
         deviceId: this.#settings.preferredAudioOutputDevice,
       },
@@ -109,34 +105,19 @@ class Voice {
       this.#setDeafen(false);
       this.#setVideo(false);
       this.#setScreenshare(false);
+
+      if (this.speakingPermission)
+        room.localParticipant
+          .setMicrophoneEnabled(true)
+          .then((track) => this.#setMicrophone(typeof track !== "undefined"));
     });
 
-    room.addListener("connected", () => {
-      this.#setState("CONNECTED");
-      if (this.speakingPermission)
-        room.localParticipant.setMicrophoneEnabled(true).then((track) => {
-          this.#setMicrophone(typeof track !== "undefined");
-          if (this.#settings.rnnoise)
-            track?.audioTrack?.setProcessor(new DenoiseTrackProcessor());
-        });
-    });
+    room.addListener("connected", () => this.#setState("CONNECTED"));
 
     room.addListener("disconnected", () => this.#setState("DISCONNECTED"));
 
     if (!auth) {
-      let voiceServer = "worldwide";
-      console.log(channel);
-      console.log(channel.server);
-      console.log(channel.server?.description);
-      if (channel.server?.description) {
-        const descSplits = channel.server.description.split("\n");
-        const lastLine = descSplits[descSplits?.length - 1];
-        if (lastLine.startsWith("voice-server:")) {
-          voiceServer = lastLine.replace("voice-server:", "");
-          console.log(voiceServer);
-        }
-      }
-      auth = await channel.joinCall(voiceServer);
+      auth = await channel.joinCall("worldwide");
     }
 
     await room.connect(auth.url, auth.token, {
@@ -225,5 +206,7 @@ export function VoiceContext(props: { children: JSX.Element }) {
     </voiceContext.Provider>
   );
 }
+
+export const useVoice = () => useContext(voiceContext);
 
 export const useVoice = () => useContext(voiceContext);
